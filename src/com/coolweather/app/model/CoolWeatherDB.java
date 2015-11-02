@@ -136,5 +136,6 @@ public class CoolWeatherDB
 			while (cursor.moveToNext());
 		}
 		return list;
+		
 	}
 }
