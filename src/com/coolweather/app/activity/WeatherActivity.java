@@ -1,6 +1,7 @@
 package com.coolweather.app.activity;
 
 import com.coolweather.app.R;
+import com.coolweather.app.service.AutoUpdateService;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Utility;
@@ -90,16 +91,16 @@ public class WeatherActivity extends Activity implements OnClickListener
 	}
 	
 	//查询县级代号所对应的天气代号
-		private void queryWeatherCode(String countyCode)
-		{
-			String address = "http://www.weather.com.cn/data/list3/city"+countyCode+".html";
-			queryFromServer(address,"countyCode");
-		}
+	private void queryWeatherCode(String countyCode)
+	{
+		String address = "http://www.weather.com.cn/data/list3/city"+countyCode+".xml";
+		queryFromServer(address,"countyCode");
+	}
 	
 	//查询天气代号所对应的天气
 	private void queryWeatherInfo(String weatherCode)
 	{
-		String address = "http://www.weather.com.cn/data/cityinfo"+weatherCode+".html";
+		String address = "http://www.weather.com.cn/data/cityinfo/"+weatherCode+".html";
 		queryFromServer(address,"weatherCode");
 	}
 	
@@ -162,9 +163,11 @@ public class WeatherActivity extends Activity implements OnClickListener
 		temp1Text.setText(prefs.getString("temp1", ""));
 		temp2Text.setText(prefs.getString("temp2", ""));
 		weatherDespText.setText(prefs.getString("weather_desp", ""));
-		publishText.setText(prefs.getString("publish_time", "")+"发布");
+		publishText.setText("今天"+prefs.getString("publish_time", "")+"发布");
 		currentDateText.setText(prefs.getString("current_date", ""));
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
+		Intent intent = new Intent(this,AutoUpdateService.class);
+		startService(intent);
 	}
 }
